@@ -14,7 +14,7 @@ def fetch_gold_price():
     try:
         # Fetch real gold prices from the goldapi.io API
         url = "https://www.goldapi.io/api/XAU/INR"
-        headers = {"x-access-token": "goldapi-b8dgsluyejhzd-io"}  # Replace 'YOUR_API_KEY' with your actual API key
+        headers = {"x-access-token": "API_KEY"}  # Replace 'YOUR_API_KEY' with your actual API key
         response = requests.get(url, headers=headers)
         data = response.json()
         gold_price = data["price"]

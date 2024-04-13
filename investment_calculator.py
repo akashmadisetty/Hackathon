@@ -1,4 +1,7 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
 def investment_calculator():
     """
@@ -104,6 +107,69 @@ def investment_calculator():
     if st.button("Calculate Score"):
         st.write("Your total investment score is:", total_score)
 
+    # Plot distribution of investment scores among different categories
+    st.header("Distribution of Investment Scores")
+
+    # Create a DataFrame for the scores
+    scores_df = pd.DataFrame({
+        "Category": ["Income", "Age", "Investment Percentage", "Investment Goals", "Risk Tolerance", "Debt", "Emergency Fund", "Job Security"],
+        "Score": [income_score, age_score, investment_percentage_score, investment_goals_score, risk_tolerance_score, debt_score, emergency_fund_score, job_security_score]
+    })
+
+    # Plot the bar chart
+    fig, ax = plt.subplots()
+    ax.bar(scores_df["Category"], scores_df["Score"])
+    ax.set_ylabel("Score")
+    ax.set_title("Distribution of Investment Scores")
+    st.pyplot(fig)
+
+    # Pie chart for investment goals
+    st.header("Investment Goals Distribution")
+
+    # Calculate the proportion of investment goals
+    investment_goals_counts = pd.Series([1]*len(investment_goals_options), index=list(investment_goals_options.keys()))
+    investment_goals_counts[investment_goals] += 1
+    fig, ax = plt.subplots()
+    ax.pie(investment_goals_counts, labels=investment_goals_counts.index, autopct='%1.1f%%')
+    ax.set_title("Proportion of Investment Goals")
+    st.pyplot(fig)
+
+    # Line chart for trend of investment scores over time
+    st.header("Trend of Investment Scores Over Time")
+
+    # Dummy data for trend
+    time_periods = ["Q1", "Q2", "Q3", "Q4"]
+    income_scores = np.random.randint(1, 7, size=len(time_periods))
+    age_scores = np.random.randint(1, 7, size=len(time_periods))
+    investment_percentage_scores = np.random.randint(1, 7, size=len(time_periods))
+    investment_goals_scores = np.random.randint(1, 7, size=len(time_periods))
+    risk_tolerance_scores = np.random.randint(1, 7, size=len(time_periods))
+    debt_scores = np.random.randint(1, 7, size=len(time_periods))
+    emergency_fund_scores = np.random.randint(1, 7, size=len(time_periods))
+    job_security_scores = np.random.randint(1, 7, size=len(time_periods))
+
+    trend_df = pd.DataFrame({
+        "Time Period": time_periods,
+        "Income": income_scores,
+        "Age": age_scores,
+        "Investment Percentage": investment_percentage_scores,
+        "Investment Goals": investment_goals_scores,
+        "Risk Tolerance": risk_tolerance_scores,
+        "Debt": debt_scores,
+        "Emergency Fund": emergency_fund_scores,
+        "Job Security": job_security_scores
+    })
+
+    # Plot the line chart
+    fig, ax = plt.subplots()
+    for column in trend_df.columns[1:]:
+        ax.plot(trend_df["Time Period"], trend_df[column], label=column)
+    ax.set_xlabel("Time Period")
+    ax.set_ylabel("Score")
+    ax.set_title("Trend of Investment Scores Over Time")
+    ax.legend()
+    st.pyplot(fig)
 
 if __name__ == "__main__":
     investment_calculator()
+
